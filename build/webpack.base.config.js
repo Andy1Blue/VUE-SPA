@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 const config = {
   entry: {
@@ -10,18 +10,22 @@ const config = {
       test: /(\.js$)|(\.vue$)/,
       loader: 'eslint-loader',
       exclude: /node_modules/
+    },
+    {
+      test: /\.vue$/,
+      loader: 'vue-loader'
+    },
+    {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      exclude: /node_modules/
     }]
-  },
-  resolve: {
-    alias: {
-      vue: 'vue/dist/vue.js'
-    }
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/',
     filename: 'assets/js/[name].js'
   }
-};
+}
 
-module.exports = config;
+module.exports = config
