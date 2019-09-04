@@ -3,7 +3,7 @@
     <AppHeader />
     <section class="main-section section">
       <div class="container content">
-        <Category />
+        <router-view></router-view>
       </div>
     </section>
     <AppFooter />
