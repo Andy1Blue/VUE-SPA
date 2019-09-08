@@ -2,7 +2,7 @@
   <div class="content">
     <div v-if="isAuthenticated">
       Hello user!
-      <p>Name: {{profile.firstName}}</p>
+      <!-- <p>Name: {{profile.firstName}}</p> -->
     </div>
     <button v-if="isAuthenticated" @click="logout()">Logout</button>
     <div v-else>
@@ -48,56 +48,70 @@
 </template>
 
 <script>
-import appService from "../app.service";
-import eventBus from "../event-bus";
+// import appService from "../app.service";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
     return {
       username: "",
-      password: "",
-      isAuthenticated: false,
-      profile: {}
+      password: ""
+      // profile: {}
     };
   },
-  watch: {
-    isAuthenticated: function(val) {
-      if (val) {
-        appService.getProfile().then(profile => {
-          this.profile = profile;
-        });
-      } else {
-        this.profile = {};
-      }
-      eventBus.$emit("authStatusUpdate", val);
-    }
+  computed: {
+    ...mapGetters(["isAuthenticated"])
   },
+  // watch: {
+  // isAuthenticated: function(val) {
+  //   if (val) {
+  //     appService.getProfile().then(profile => {
+  //       this.profile = profile;
+  //     });
+  //   } else {
+  //     this.profile = {};
+  //   }
+  //   eventBus.$emit("authStatusUpdate", val);
+  // }
+  // },
   methods: {
+    ...mapActions({
+      logout: "logout"
+    }),
     login() {
-      appService
-        .login({ username: this.username, password: this.password })
-        .then(data => {
-          window.localStorage.setItem("token", data.token);
-          window.localStorage.setItem("tokenExpiration", data.expiration);
-          this.isAuthenticated = true;
+      this.$store
+        .dispatch("login", {
+          username: this.username,
+          password: this.password
+        })
+        .then(() => {
           this.username = "";
           this.password = "";
-        })
-        .catch(() => window.alert("Could not login!"));
-    },
-    logout() {
-      window.localStorage.setItem("token", null);
-      window.localStorage.setItem("tokenExpiration", null);
-      this.isAuthenticated = false;
-    }
-  },
-  created() {
-    let expiration = window.localStorage.getItem("tokenExpiration");
-    var unixTimestamp = new Date().getTime() / 1000;
-    if (expiration !== null && parseInt(expiration) - unixTimestamp > 0) {
-      this.isAuthenticated = true;
+        });
+      //   appService
+      //     .login({ username: this.username, password: this.password })
+      //     .then(data => {
+      //       window.localStorage.setItem("token", data.token);
+      //       window.localStorage.setItem("tokenExpiration", data.expiration);
+      //       this.isAuthenticated = true;
+      //       this.username = "";
+      //       this.password = "";
+      //     })
+      //     .catch(() => window.alert("Could not login!"));
+      // },
+      // logout() {
+      // window.localStorage.setItem("token", null);
+      // window.localStorage.setItem("tokenExpiration", null);
+      // this.isAuthenticated = false;
     }
   }
+  // created() {
+  // let expiration = window.localStorage.getItem("tokenExpiration");
+  // var unixTimestamp = new Date().getTime() / 1000;
+  // if (expiration !== null && parseInt(expiration) - unixTimestamp > 0) {
+  // this.isAuthenticated = true;
+  // }
+  // }
 };
 </script>
 
