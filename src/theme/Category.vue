@@ -12,13 +12,15 @@
 <script>
 import Post from "./Post.vue";
 import appService from "../app.service";
+import { mapGetters } from "vuex";
+
 export default {
   components: {
     Post
   },
   data() {
     return {
-      id: this.$route.params.id,
+      id: this.$route.params.id
       // postsFrontEnd: [
       //   {
       //     id: 1,
@@ -68,29 +70,33 @@ export default {
       //     link: "https://css-tricks.com/power-custom-directives-vue/"
       //   }
       // ],
-      posts: []
+      // posts: []
     };
+  },
+  computed: {
+    ...mapGetters("postsModule", ["posts"])
   },
   methods: {
     loadPosts() {
       let categoryId = 2;
-      if (this.id === "mobile") {
+      if (this.$route.params.id === "mobile") {
         categoryId = 11;
       }
-      appService.getPosts(categoryId).then(data => {
-        this.posts = data;
-      });
+      this.$store.dispatch("postsModule/updateCategory", categoryId);
+      // appService.getPosts(categoryId).then(data => {
+      //   this.posts = data;
+      // });
     }
   },
   watch: {
     $route(to, from) {
-      this.id = to.params.id;
+      // this.id = to.params.id;
       this.loadPosts();
     }
   },
   created() {
     this.loadPosts();
-    console.log(this.$route.query.page);
+    // console.log(this.$route.query.page);
   }
 };
 </script>

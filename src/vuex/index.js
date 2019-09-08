@@ -4,6 +4,7 @@ import {
   resolve
 } from 'path'
 import appService from "../app.service"
+import postsModule from './posts'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,9 @@ const state = {
 }
 
 const store = new Vuex.Store({
+  modules: {
+    postsModule
+  },
   state,
   getters: {
     isAuthenticated: (state) => {
