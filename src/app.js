@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import AppLayout from './theme/Layout.vue'
 import router from './router'
+import store from './vuex/index'
 
 const app = new Vue({
   router,
@@ -8,10 +9,12 @@ const app = new Vue({
   scrollBehavior: (to, from, savedPosition) => ({
     y: 0
   }),
-  ...AppLayout
+  ...AppLayout,
+  store
 })
 
 export {
   app,
-  router
+  router,
+  store
 }

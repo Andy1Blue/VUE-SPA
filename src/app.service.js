@@ -1,8 +1,8 @@
-import axios from 'axios'
+import * as axios from 'axios'
 
 axios.defaults.baseURL = 'https://api.fullstackweekly.com';
 
-axios.interceptors.request.user(function (config) {
+axios.interceptors.request.use(function (config) {
   if (typeof window === 'undefined') {
     return config
   }

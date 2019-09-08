@@ -10,3 +10,19 @@
     </div>
   </nav>
 </template>
+
+<script>
+import eventBus from "../event-bus";
+export default {
+  data() {
+    return {
+      isAuthenticated: false
+    };
+  },
+  created() {
+    eventBus.$on("authStatusUpdate", isAuthenticated => {
+      this.isAuthenticated = isAuthenticated;
+    });
+  }
+};
+</script>
