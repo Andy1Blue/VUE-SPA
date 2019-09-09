@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <AppHeader />
     <section class="main-section section">
       <div class="container content">
